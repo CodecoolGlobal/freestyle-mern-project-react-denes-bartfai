@@ -66,7 +66,20 @@ app.delete('/api/deleteUser/:id', (req, res) =>{
 })
 
 
-console.log(connectionString);
+app.get('/api/findUser/:username', async (req, res) =>{
+    try{
+    let data = await User.findOne({username: req.params.username})
+    if (data !== null) {
+        res.json([true, data.password])
+    } else {
+    res.status(500).json([false, {message:"User not found"}])
+    }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:"Some error occured"})
+    }
+})
+    
 mongoose.connect(connectionString).then(() => {
     console.log("Connection to the database have been successful!");
     app.listen(3001, () => {
@@ -75,18 +88,3 @@ mongoose.connect(connectionString).then(() => {
 }).catch((err) => {
     console.log(err);
 })
-
-app.get('/api/findUser/:username', async (req, res) =>{
-    try{
-    let data = await User.findOne({username: req.params.username})
-    if (data !== null) {
-        res.json([true, data.password])
-    } else {
-    res.status(500).json({message:"User not found"})  
-    }
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({message:"Some error occured"})
-    }
-})
-    
