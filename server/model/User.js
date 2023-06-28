@@ -2,11 +2,17 @@ const mongoose = require('mongoose');
 const {Schema, model} = mongoose;
 
 const userSchema = new Schema({
-    username:String,
-    password: String,
+    username: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
     createdAt: Date
     });
 
-    const User = model('User', userSchema);
+    const User = model('User', userSchema, 'Users');
 
-    module.exports = Todo;
+    module.exports = User;
