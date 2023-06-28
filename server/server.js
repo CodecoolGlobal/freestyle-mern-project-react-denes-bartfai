@@ -2,6 +2,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const express = require('express');
 let User = require('./model/User.js')
+const bcrypt = require('bcrypt');
 const connectionString = process.env.MONGODB_CONNECTION_STRING;
 
 const app = express();
@@ -15,11 +16,12 @@ app.use(function(req, res, next){
 })
 
 
-app.post('/api/user', (req, res) => {
+/*app.post('/api/user', (req, res) => {
     // console.log(req.body)
     const username = req.body.username;
     const password = req.body.password;
     const createdAt = Date.now();
+
     const user = new User({
       username,
       password,
@@ -28,6 +30,27 @@ app.post('/api/user', (req, res) => {
     user.save()
     .then(user => res.json(user))
     .catch(err => res.status(400).json({ success: false }));
+});*/
+
+app.post('/api/user', (req, res) => {
+    const { username, password } = req.body;
+    const createdAt = Date.now();
+    
+    bcrypt.hash(password, 10, (err, hash) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: "Error occurred during password hashing." });
+        }
+
+        const user = new User({
+            username,
+            password: hash,
+            createdAt
+        });
+
+        user.save()
+            .then(user => res.json(user))
+            .catch(err => res.status(400).json({ success: false, message: "Error occurred while saving user." }));
+    });
 });
 
 app.get('/api/getAllUser',  (req,res) => {
