@@ -1,7 +1,18 @@
-function LandingPage() {
+import { Link } from "react-router-dom";
+
+function LandingPage(props) {
+  const loggedIn = props.login;
   return (
     <>
-      <h1>Landing page!</h1>
+      {loggedIn ? (
+        <button>
+          <Link to="/play">Play</Link>
+        </button>
+      ) : (
+        <div>
+          <h1>Please login to proceed</h1>
+        </div>
+      )}
     </>
   );
 }

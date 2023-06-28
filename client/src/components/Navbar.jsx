@@ -1,25 +1,24 @@
 import { Link, Outlet } from "react-router-dom";
 
-export default function Navbar() {
+export default function Navbar(props) {
+  const loggedIn = props.login;
   return (
     <>
       <nav>
-        <ul className="listOne">
-          <li >
-            <Link to="/">Landing Page</Link>
-          </li>
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-          <li>
+        <button>
+          <Link to="/">Home</Link>
+        </button>
+        {loggedIn ? (
+          <button>
             <Link to="/profile">Profile</Link>
-          </li>
-        </ul>
+          </button>
+        ) : (
+          <button>
+            <Link to="/login">Login</Link>
+          </button>
+        )}
       </nav>
-      <Outlet/>
+      <Outlet />
     </>
   );
 }
