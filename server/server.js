@@ -16,8 +16,8 @@ app.use(function(req, res, next){
 })
 
 
-/*app.post('/api/user', (req, res) => {
-    // console.log(req.body)
+app.post('/api/user', (req, res) => {
+    console.log(req.body)
     const username = req.body.username;
     const password = req.body.password;
     const createdAt = Date.now();
@@ -30,28 +30,28 @@ app.use(function(req, res, next){
     user.save()
     .then(user => res.json(user))
     .catch(err => res.status(400).json({ success: false }));
-});*/
-
-app.post('/api/user', (req, res) => {
-    const { username, password } = req.body;
-    const createdAt = Date.now();
-    
-    bcrypt.hash(password, 10, (err, hash) => {
-        if (err) {
-            return res.status(500).json({ success: false, message: "Error occurred during password hashing." });
-        }
-
-        const user = new User({
-            username,
-            password: hash,
-            createdAt
-        });
-
-        user.save()
-            .then(user => res.json(user))
-            .catch(err => res.status(400).json({ success: false, message: "Error occurred while saving user." }));
-    });
 });
+
+// app.post('/api/user', (req, res) => {
+//     const { username, password } = req.body;
+//     const createdAt = Date.now();
+    
+//     bcrypt.hash(password, 10, (err, hash) => {
+//         if (err) {
+//             return res.status(500).json({ success: false, message: "Error occurred during password hashing." });
+//         }
+
+//         const user = new User({
+//             username,
+//             password: hash,
+//             createdAt
+//         });
+
+//         user.save()
+//             .then(user => res.json(user))
+//             .catch(err => res.status(400).json({ success: false, message: "Error occurred while saving user." }));
+//     });
+// });
 
 app.get('/api/getAllUser',  (req,res) => {
     User.find()
@@ -66,7 +66,7 @@ app.delete('/api/deleteUser/:id', (req, res) =>{
 })
 
 
-
+console.log(connectionString);
 mongoose.connect(connectionString).then(() => {
     console.log("Connection to the database have been successful!");
     app.listen(3001, () => {
@@ -75,3 +75,18 @@ mongoose.connect(connectionString).then(() => {
 }).catch((err) => {
     console.log(err);
 })
+
+app.get('/api/findUser/:username', async (req, res) =>{
+    try{
+    let data = await User.findOne({username: req.params.username})
+    if (data !== null) {
+        res.json([true, data.password])
+    } else {
+    res.status(500).json({message:"User not found"})  
+    }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:"Some error occured"})
+    }
+})
+    
