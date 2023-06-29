@@ -1,21 +1,23 @@
-import { Link } from "react-router-dom";
+import { useNavigate , Link } from "react-router-dom";
 import React, { useState } from "react";
 
 export default function Register(props) {
   const userSetter = props.userSet;
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirm] = useState();
 
-  function handleSubmit() {
+  const handleSubmit = function (e) {
+    e.preventDefault();
     if (confirmPassword === password) {
-      fetch(`localhost:3001/api/findUser/${userData.username}`)
+      fetch(`http://127.0.0.1:3001/api/findUser/${username}`)
         .then((response) => response.json())
-        .then((response) => {
-          if (!response[0]) {
+        .then((data) => {
+          if (!data[0]) {
             userSetter({ username: username, password: password });
-            fetch("localhost:3001/api/user", {
+            fetch("http://127.0.0.1:3001/api/user", {
               method: "POST",
               body: JSON.stringify({
                 username: username,
@@ -26,9 +28,12 @@ export default function Register(props) {
               },
             })
             .then(response => response.json())
-            .then(response);
+            .then(data => console.log(data))
+            .catch(err => console.log(err))
           }
-        });
+        })
+        .catch(err => console.log(err));
+        navigate("/");
     }
   }
 
@@ -58,7 +63,7 @@ export default function Register(props) {
           }}
         ></input>
         <button type="submit">
-          <Link to="/">Register</Link>
+          Register
         </button>
       </form>
       <p>Already have an account?</p>
