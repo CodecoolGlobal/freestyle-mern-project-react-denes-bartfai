@@ -21,7 +21,7 @@ export default function Login(props) {
 
   return (
     <>
-      <div>Login</div>
+      <div className="login">Login</div>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -31,7 +31,7 @@ export default function Login(props) {
           }}
         ></input>
         <input
-          type="text"
+          type="password"
           placeholder="password"
           onChange={(e) => {
             setPassword(e.target.value);

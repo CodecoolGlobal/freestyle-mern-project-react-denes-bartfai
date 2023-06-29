@@ -27,11 +27,11 @@ function Question(props) {
   shuffledAnswers(allAnswers);
 
   return (
-    <div>
-      <p>{score}</p>
+    <div className="questions">
+      <h2>Correct answers: {score}</h2>
       <h1>{question.question}</h1>
       {allAnswers.map((item) => (
-        <button onClick={(event) => {handler(event.target.innerHTML)}}>{item}</button>
+        <button className="answers" onClick={(event) => {handler(event.target.innerHTML)}}>{item}</button>
       ))}
     </div>
   );

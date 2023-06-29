@@ -5,12 +5,13 @@ function LandingPage(props) {
   return (
     <>
       {loggedIn ? (
-        <button>
-          <Link to="/play">Play</Link>
+        <button className="playButton">
+          <Link to="/play">Click here to play</Link>
         </button>
       ) : (
-        <div>
-          <h1>Please login to proceed</h1>
+        <div className="proceed">
+          <h3>Welcome to our quiz site</h3>
+          <h3>Please login to proceed</h3>
         </div>
       )}
     </>

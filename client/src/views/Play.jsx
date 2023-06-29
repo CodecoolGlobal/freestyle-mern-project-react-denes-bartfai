@@ -44,7 +44,7 @@ function Play() {
   return (
     <div>
       {finishedGame ? (
-        <div>You got {playerScore} out of 10 right</div>
+        <div className="score">You got {playerScore} out of 10 right</div>
       ) : pickedDiff ? (
         <Question
           question={questions[currentQuestion]}
@@ -52,8 +52,8 @@ function Play() {
           score={playerScore}
         />
       ) : (
-        <div>
-          <h1>Pick a difficulty</h1>
+        <div className="difficulty">
+          <h1>Choose your difficulty level</h1>
           <button
             value="easy"
             onClick={(e) => {
