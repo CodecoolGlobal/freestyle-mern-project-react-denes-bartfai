@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Question from "../components/Question";
+import { decode } from 'html-entities';
 
 function Play() {
   const [difficulty, setDifficulty] = useState("easy");
   const [pickedDiff, setPick] = useState(false);
-  const [questions, setQuestions] = useState([
+  let [questions, setQuestions] = useState([
     {
-      question: "sampkle",
+      question: "sample",
       correct_answer: "sample",
       incorrect_answers: ["test", "test", "test"],
     },
@@ -24,8 +25,22 @@ function Play() {
       .then((response) => response.json())
       .then((data) => {
         setQuestions(data["results"]);
-      });
+      }
+    )
   };
+
+  questions = questions.map((question) => {
+    const decodedQuestion = {
+        ...question,
+        question: decode(question.question),
+        correct_answer: decode(question.correct_answer),
+        incorrect_answers: question.incorrect_answers.map((answer) =>
+          decode(answer)
+        ),
+    };
+        return decodedQuestion;
+  });    
+ //console.log(questions);
 
   const handleAnswer = function (answer) {
     if (currentQuestion === 9) {
