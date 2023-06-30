@@ -49,14 +49,14 @@ export default function Register(props) {
           }}
         ></input>
         <input
-          type="text"
+          type="password"
           placeholder="password"
           onChange={(e) => {
             setPassword(e.target.value);
           }}
         ></input>
         <input
-          type="text"
+          type="password"
           placeholder="confirm password"
           onChange={(e) => {
             setConfirm(e.target.value);
