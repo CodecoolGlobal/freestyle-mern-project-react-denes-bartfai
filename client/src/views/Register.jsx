@@ -12,10 +12,10 @@ export default function Register(props) {
   const handleSubmit = function (e) {
     e.preventDefault();
     if (confirmPassword === password) {
-      fetch(`http://127.0.0.1:3001/api/findUser/${username}`)
-        .then((response) => response.json())
-        .then((data) => {
-          if (!data[0]) {
+   //   fetch(`http://127.0.0.1:3001/api/findUser/${username}`)
+   //     .then((response) => response.json())
+   //     .then((data) => {
+   //       if (!data[0]) {
             userSetter({ username: username, password: password });
             fetch("http://127.0.0.1:3001/api/user", {
               method: "POST",
@@ -28,14 +28,13 @@ export default function Register(props) {
               },
             })
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then(data =>{navigate("/"); console.log(data)})
             .catch(err => console.log(err))
           }
-        })
-        .catch(err => console.log(err));
-        navigate("/");
-    }
-  }
+        }//)
+   //     .catch(err => console.log(err));
+  //  }
+ // }
 
   return (
     <>
