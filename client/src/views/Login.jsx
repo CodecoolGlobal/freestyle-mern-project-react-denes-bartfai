@@ -13,7 +13,7 @@ export default function Login(props) {
     .then(response => response.json())
     .then(data => {
       if(data[0] && data[1].password === password){
-        userSetter({username: username, password: password, id: data[1]["_id"]})
+        userSetter(username, password)
         navigate("/");
       }
     })

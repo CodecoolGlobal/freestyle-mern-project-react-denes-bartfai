@@ -81,6 +81,19 @@ app.get("/api/findUser/:username", async (req, res) => {
     res.json({ message: "Some error occured" }).status(500);
   }
 });
+app.get("api/findUserByIp/:id", async (req,res) => {
+  try {
+    let data = await User.findById(req.params.id);
+    if (data !== null) {
+      res.json([true, data]);
+    } else {
+      res.json([false, { message: "User not found" }]);
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({ message: "Some error occured" }).status(500);
+  }
+})
 
 mongoose
   .connect(connectionString)

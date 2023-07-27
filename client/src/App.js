@@ -10,13 +10,13 @@ import Play from "./views/Play";
 
 function App() {
   const [loggedIn, setLogin] = useState(false);
-  const [userData, setUserData] = useState({username: undefined, password: undefined});
+  const [userData, setUserData] = useState({username: "test", password: "test"});
 
   const userSetter = function (name, password) {
     setLogin(true);
-    setUserData({ username: name, password: password });
+    setUserData({ username: name, password: password});
   };
-
+  
 
   return (
     <BrowserRouter>
@@ -25,7 +25,7 @@ function App() {
           <Route path="/" element={<LandingPage login={loggedIn} />} />
           <Route path="/register" element={<Register userSet={userSetter} />} />
           <Route path="/login" element={<Login userSet={userSetter} />} />
-          <Route path="/profile" element={<Profile user={userData} />} />
+          <Route path="/profile" element={<Profile user={userData.username} login={setLogin} />} />
           <Route path="/play" element={<Play />} />
         </Route>
       </Routes>
