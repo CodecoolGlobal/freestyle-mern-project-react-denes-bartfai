@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Profile(props) {
-  const username = props.user;
+  const userdata = props.user;
   const login = props.login;
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
@@ -19,8 +19,8 @@ export default function Profile(props) {
   };
 
   useEffect(() => {
-    console.log(username);
-    fetch(`http://127.0.0.1:3001/api/findUser/${username}`)
+    console.log(userdata);
+    fetch(`http://127.0.0.1:3001/api/findUser/${userdata.username}`)
       .then((res) => res.json())
       .then((response) => {
         if (response[0]) {

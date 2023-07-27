@@ -65,7 +65,7 @@ app.delete("/api/deleteUser/:id", (req, res) => {
     .catch((error) => res.json({ message: "Error" }));
 });
 
-/*app.get("/api/findUser/:username", async (req, res) => {
+app.get("/api/findUser/:username", async (req, res) => {
   try {
     let data = await User.findOne({ username: req.params.username });
     if (data !== null) {
@@ -77,7 +77,7 @@ app.delete("/api/deleteUser/:id", (req, res) => {
     console.log(error);
     res.json({ message: "Some error occured" }).status(500);
   }
-});*/
+});
 
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
