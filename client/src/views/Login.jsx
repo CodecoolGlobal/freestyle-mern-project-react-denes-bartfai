@@ -7,7 +7,7 @@ export default function Login(props) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
-  const handleSubmit = function (e) {
+  /*const handleSubmit = function (e) {
     e.preventDefault();
     fetch(`http://127.0.0.1:3001/api/findUser/${username}`)
     .then(response => response.json())
@@ -17,6 +17,30 @@ export default function Login(props) {
         navigate("/");
       }
     })
+  };*/
+
+  const handleSubmit = function (e) {
+    e.preventDefault();
+    const requestData = {
+      username: username,
+      password: password,
+    };
+    fetch("http://127.0.0.1:3001/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    })
+    .then((response) => response.json())
+    .then(data => {
+       console.log(data)
+       userSetter(username, password)
+       navigate("/");
+    })
+    .catch((error) => {
+    console.error("Error occurred during login:", error);
+    });
   };
 
   return (

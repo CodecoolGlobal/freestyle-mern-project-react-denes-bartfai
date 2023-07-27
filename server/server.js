@@ -18,7 +18,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.post("/api/user", (req, res) => {
+/*app.post("/api/user", (req, res) => {
   console.log(req.body);
   const username = req.body.username;
   const password = req.body.password;
@@ -33,28 +33,25 @@ app.post("/api/user", (req, res) => {
     .save()
     .then((user) => res.json(user))
     .catch((err) => res.status(400).json({ success: false }));
-});
+});*/
 
-// app.post('/api/user', (req, res) => {
-//     const { username, password } = req.body;
-//     const createdAt = Date.now();
-
-//     bcrypt.hash(password, 10, (err, hash) => {
-//         if (err) {
-//             return res.status(500).json({ success: false, message: "Error occurred during password hashing." });
-//         }
-
-//         const user = new User({
-//             username,
-//             password: hash,
-//             createdAt
-//         });
-
-//         user.save()
-//             .then(user => res.json(user))
-//             .catch(err => res.status(400).json({ success: false, message: "Error occurred while saving user." }));
-//     });
-// });
+ app.post('/api/user', (req, res) => {
+     const { username, password } = req.body;
+     const createdAt = Date.now();
+     bcrypt.hash(password, 10, (err, hash) => {
+         if (err) {
+             return res.status(500).json({ success: false, message: "Error occurred during password hashing." });
+         }
+         const user = new User({
+             username,
+             password: hash,
+             createdAt
+         });
+         user.save()
+             .then(user => res.json(user))
+             .catch(err => res.status(400).json({ success: false, message: "Error occurred while saving user." }));
+     });
+ });
 
 app.get("/api/getAllUser", (req, res) => {
   User.find()
@@ -68,7 +65,7 @@ app.delete("/api/deleteUser/:id", (req, res) => {
     .catch((error) => res.json({ message: "Error" }));
 });
 
-app.get("/api/findUser/:username", async (req, res) => {
+/*app.get("/api/findUser/:username", async (req, res) => {
   try {
     let data = await User.findOne({ username: req.params.username });
     if (data !== null) {
@@ -80,7 +77,29 @@ app.get("/api/findUser/:username", async (req, res) => {
     console.log(error);
     res.json({ message: "Some error occured" }).status(500);
   }
+});*/
+
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+  User.findOne({ username: username })
+      .then(user => {
+          if (!user) {
+              return res.status(404).json({ message: "User not found." });
+          }
+          bcrypt.compare(password, user.password, (err, result) => {
+              if (err) {
+                  return res.status(500).json({message: "Error occurred during password comparison." });
+              }
+              if (result) {
+                  res.json([true, user]);
+              } else {
+                  res.status(401).json({message: "Invalid password." });
+              }
+          });
+      })
+      .catch(err => res.status(500).json({ success: false, message: "Error occurred during login." }));
 });
+
 
 mongoose
   .connect(connectionString)
