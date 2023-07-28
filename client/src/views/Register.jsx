@@ -16,25 +16,22 @@ export default function Register(props) {
    //     .then((response) => response.json())
    //     .then((data) => {
    //       if (!data[0]) {
-            userSetter({ username: username, password: password });
+            userSetter(username, password);
             fetch("http://127.0.0.1:3001/api/user", {
               method: "POST",
               body: JSON.stringify({
                 username: username,
-                password: password
+                password: password,
               }),
               headers: {
                 "Content-type": "application/json; charset=UTF-8",
               },
             })
             .then(response => response.json())
-            .then(data =>{navigate("/"); console.log(data)})
+            .then(data =>{navigate("/");})
             .catch(err => console.log(err))
           }
-        }//)
-   //     .catch(err => console.log(err));
-  //  }
- // }
+        }
 
   return (
     <>

@@ -7,6 +7,7 @@ import LandingPage from "./views/LandingPage";
 import Login from "./views/Login";
 import Profile from "./views/Profile";
 import Play from "./views/Play";
+import Leaderboard from "./views/Leaderboard";
 
 function App() {
   const [loggedIn, setLogin] = useState(false);
@@ -17,7 +18,6 @@ function App() {
     setUserData({ username: name, password: password});
   };
   
-
   return (
     <BrowserRouter>
       <Routes>
@@ -26,7 +26,8 @@ function App() {
           <Route path="/register" element={<Register userSet={userSetter} />} />
           <Route path="/login" element={<Login userSet={userSetter} />} />
           <Route path="/profile" element={<Profile user={userData.username} login={setLogin} />} />
-          <Route path="/play" element={<Play />} />
+          <Route path="/play" element={<Play user={userData} />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
         </Route>
       </Routes>
     </BrowserRouter>

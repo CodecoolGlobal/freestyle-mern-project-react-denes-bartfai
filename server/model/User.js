@@ -10,6 +10,11 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    playerScore:{
+        type:[{
+            score: Number
+        }]
+    },
     createdAt: Date
     });
 

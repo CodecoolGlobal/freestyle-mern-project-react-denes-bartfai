@@ -19,8 +19,7 @@ export default function Profile(props) {
   };
 
   useEffect(() => {
-    console.log(userdata);
-    fetch(`http://127.0.0.1:3001/api/findUser/${userdata.username}`)
+    fetch(`http://127.0.0.1:3001/api/findUser/${userdata}`)
       .then((res) => res.json())
       .then((response) => {
         if (response[0]) {

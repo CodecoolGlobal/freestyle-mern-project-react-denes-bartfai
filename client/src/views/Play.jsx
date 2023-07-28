@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import Question from "../components/Question";
 import { decode } from 'html-entities';
+import { useNavigate } from 'react-router-dom';
 
-function Play() {
+function Play(props) {
+  const user = props.user;
+
+  
   const [difficulty, setDifficulty] = useState("easy");
   const [pickedDiff, setPick] = useState(false);
   let [questions, setQuestions] = useState([
@@ -12,9 +16,22 @@ function Play() {
       incorrect_answers: ["test", "test", "test"],
     },
   ]);
+
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [playerScore, setPlayerScore] = useState(0);
+  const [points, setPoints] = useState(0);
   const [finishedGame, setFinish] = useState(false);
+  const [userData, setUserData] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://127.0.0.1:3001/api/findUser/${user.username}`)
+      .then((res) => res.json())
+      .then((response) => {
+        if (response[0]) {
+          setUserData(response[1]);
+        }
+      });
+  }, []);
 
   const difficultyPicked = async function (diff) {
     setDifficulty(diff);
@@ -40,26 +57,70 @@ function Play() {
     };
         return decodedQuestion;
   });    
- //console.log(questions);
+ 
 
   const handleAnswer = function (answer) {
+    let increment = 0;
+
+    if (difficulty === 'medium') {
+      increment = 3;
+    } else if (difficulty === 'hard') {
+      increment = 5;
+    } else {
+      increment = 1;
+    }
+
     if (currentQuestion === 9) {
       setFinish(true);
       if (answer) {
-        setPlayerScore(playerScore + 1);
+        setPlayerScore(playerScore + 1)
+        setPoints(points + increment)
       }
     } else if (answer) {
       setPlayerScore(playerScore + 1);
       setCurrentQuestion(currentQuestion + 1);
+      setPoints(points + increment)
     } else {
       setCurrentQuestion(currentQuestion + 1);
     }
   };
 
+
+
+  let navigate = useNavigate();
+
+  const submitScore = async () => {
+    try{
+      const response = await fetch(`http://127.0.0.1:3001/api/playerScore/${userData._id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            playerScore:[
+              {score: points},
+            ]
+          }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      navigate('/');
+    } catch(e) {
+      console.log(e);
+    }
+  }
+  
+
   return (
     <div>
       {finishedGame ? (
-        <div className="score">You got {playerScore} out of 10 right</div>
+        <div className="score">
+          <h2>You got {playerScore} out of 10 right</h2>
+          <h2>Your score is: {points}</h2>
+          <button onClick={submitScore}>Submit</button>
+          </div>
       ) : pickedDiff ? (
         <Question
           question={questions[currentQuestion]}

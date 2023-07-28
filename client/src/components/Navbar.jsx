@@ -9,9 +9,14 @@ export default function Navbar(props) {
           <Link to="/">Home</Link>
         </button>
         {loggedIn ? (
+          <>
           <button>
             <Link to="/profile">Profile</Link>
           </button>
+          <button>
+          <Link to="/leaderboard">Leaderboard</Link>
+        </button>
+        </>
         ) : (
           <button>
             <Link to="/login">Login</Link>

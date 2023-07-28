@@ -156,15 +156,40 @@ body{
   }
 
   .score {
-    display: flex;
+    display:block;
     justify-content: center; 
     align-items: center; 
     font-size: xx-large;
     margin-top: 100px;
+    margin-left: 50%;
+    margin:auto
   }
   
-  
-  
+  .table-header {
+    color: #cecece;
+    font-size: 1.1em;
+    text-align: center;
+    background: #212121;
+    padding: 18px 0;
+}
+
+.table-body {
+  font-size: 1.1em;
+  text-align: center;
+  color: black;
+  background: #d8d8d8;
+  padding: 18px 0;
+}
+
+.table-header > tr > td{
+  border: 1px solid black;   
+}
+ 
+.table {
+  margin: auto;
+  font-size: 25px;
+}
+
   
   
   
